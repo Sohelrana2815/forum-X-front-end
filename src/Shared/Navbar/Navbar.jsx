@@ -13,7 +13,7 @@ const Navbar = () => {
         <NavLink>Notification icon</NavLink>
       </li>
       <li>
-        <NavLink>Join Us</NavLink>
+        <NavLink to="/login">Join Us</NavLink>
       </li>
     </>
   );
