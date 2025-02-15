@@ -15,11 +15,12 @@ export function AuthProvider({ children }) {
   const [authError, setAuthError] = useState(null);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log("User on auth state changed:", currentUser);
       setUser(currentUser);
       setLoading(false);
     });
     return () => unsubscribe();
-  }, []);
+  }, [user]);
 
   // Sign up with email/password
 
