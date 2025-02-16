@@ -24,23 +24,51 @@ export function AuthProvider({ children }) {
 
   // Sign up with email/password
 
-  const signUp = async (email, password, name) => {
+  const signUp = async (email, password) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      if (name?.displayName) {
-        await updateProfile(userCredential.user, {
-          displayName: name.displayName,
-        });
-        setUser((prevUser) => ({ ...prevUser, displayName: name.displayName }));
-      }
-      setAuthError(null);
+      console.log(
+        "Firebase user created successfully! UID:",
+        userCredential.user.uid
+      );
     } catch (error) {
-      setAuthError(error.message);
-      // Re-throw the error so it can be handle in the form
+      let errorMessage = "Registration failed. Please try again.";
+      // Firebase error codes
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          errorMessage = "Email already in use";
+          break;
+        case "auth/invalid-email":
+          errorMessage = "Invalid email address";
+          break;
+        case "auth/weak-password":
+          errorMessage = "Password must be at least 6 characters";
+          break;
+      }
+      setAuthError(errorMessage);
+      throw error;
+    }
+  };
+
+  const updateUserProfile = async (updates) => {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error("No user is currently signed in.");
+      }
+
+      await updateProfile(user, updates);
+      setUser((prev) => ({
+        ...prev,
+        ...updates,
+      }));
+    } catch (error) {
+      console.error("Profile update error:", error.message);
+      throw error;
     }
   };
 
@@ -49,6 +77,7 @@ export function AuthProvider({ children }) {
     loading,
     authError,
     signUp,
+    updateUserProfile,
   };
 
   return (
