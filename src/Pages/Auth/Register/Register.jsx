@@ -36,10 +36,7 @@ const Register = () => {
         photoURL: photoURL,
       });
 
-      console.log(
-        "Registration and profile update successful!",
-        userCredential
-      );
+      console.log("Registration and profile update successful!");
     } catch (error) {
       console.error("Registration error:", error.message);
     }
