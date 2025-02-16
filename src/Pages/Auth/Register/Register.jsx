@@ -14,33 +14,47 @@ const Register = () => {
     try {
       const { name, email, password, avatar } = data;
 
-      // 1. Upload image (mandatory during sign-up)
+      // 1. Upload image (Mandatory during sign up)
+
       const formData = new FormData();
       formData.append("image", avatar[0]);
 
       const uploadResponse = await axiosPublic.post("/upload-image", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
+      console.log(
+        "Img url from img bb:",
+        uploadResponse.data,
+        "Avatar file",
+        avatar
+      );
 
       if (!uploadResponse.data.success) {
         throw new Error("Image upload failed");
       }
+      // Stored url in photoURL variable
+
       const photoURL = uploadResponse.data.url;
 
       // 2. Create user
-      const userCredential = await signUp(email, password);
 
-      // 3. Update profile with initial data
-      await updateUserProfile({
+      await signUp(email, password);
+
+      // 3. Update user profile with name and image
+
+      updateUserProfile({
         displayName: name,
         photoURL: photoURL,
       });
 
-      console.log("Registration and profile update successful!");
+      console.log("Registration profile update successful!");
     } catch (error) {
       console.error("Registration error:", error.message);
     }
   };
+
   return (
     <>
       <div className="hero bg-base-200 min-h-screen">

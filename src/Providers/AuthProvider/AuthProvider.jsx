@@ -15,11 +15,12 @@ export function AuthProvider({ children }) {
   const [authError, setAuthError] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => { // ekhaner currentUser sheta hosse call back er argument
-      console.log("User in onAuthStateChanged", currentUser);
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log("User in Auth State Changed:", currentUser);
       setUser(currentUser);
       setLoading(false);
     });
+
     return () => unsubscribe();
   }, []);
 
@@ -57,25 +58,22 @@ export function AuthProvider({ children }) {
 
   const updateUserProfile = async (updates) => {
     try {
-      // 1. বর্তমান ইউজার চেক করা
+      // 1. Check current user
       const user = auth.currentUser;
-
       if (!user) {
-        throw new Error("কোনো ইউজার লগইন করেনি!");
+        throw new Error("User not logged in");
       }
-
-      // ২. Firebase-এ প্রোফাইল আপডেট করা
-
+      // 2. Firebase profile update
       await updateProfile(user, updates);
+      // 3. Update the local state (React State)
 
-      // ৩. লোকাল স্টেট আপডেট (React State)
       setUser((prev) => ({
         ...prev,
         ...updates,
       }));
     } catch (error) {
-      // ৪. এরর হ্যান্ডেলিং
-      console.error("প্রোফাইল আপডেটে সমস্যা:", error.message);
+      // Error handling
+      console.error("Profile update problem:", error.message);
       throw error;
     }
   };
