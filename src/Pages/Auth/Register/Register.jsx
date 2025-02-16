@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../../Providers/AuthProvider/AuthProvider";
 import { axiosPublic } from "../../../Hooks/axiosInstances";
+import { useAuth } from "../../../Hooks/useAuth";
 
 const Register = () => {
   const {
