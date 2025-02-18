@@ -167,11 +167,8 @@ const Register = () => {
                       {errors.avatar.message}
                     </span>
                   )}
-                  <div className="text-sm text-gray-500 mt-1">
+                  <div className="text-sm text-gray-200 mt-1">
                     Maximum file size: 5MB (JPEG, PNG, WEBP)
-                  </div>
-                  <div>
-                    <a className="link link-hover">Forgot password?</a>
                   </div>
                   {/* Display Firebase Auth Errors */}
                   {authError && <div style={{ color: "red" }}>{authError}</div>}
@@ -187,8 +184,8 @@ const Register = () => {
                 {/* Toggle */}
                 <div>
                   <h3 className="text-center">
-                    Already have an account? {" "}
-                    <Link to="/login" className="text-white text-base">
+                    Already have an account?{" "}
+                    <Link to="/login" className="text-purple-500 text-base">
                       Login
                     </Link>
                   </h3>

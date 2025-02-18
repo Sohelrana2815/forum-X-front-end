@@ -1,9 +1,49 @@
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import { useAuth } from "../../Hooks/useAuth";
-
+import Swal from "sweetalert2";
 const Navbar = () => {
-  const { signOut, loading } = useAuth();
+  const { signOut, loading, user } = useAuth();
 
+  // Logout
+
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, log out!",
+    });
+
+    if (result.isConfirmed) {
+      // Show loading state
+      Swal.fire({
+        title: "Logging out...",
+        text: "Please wait while we log you out.",
+        allowOutsideClick: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      try {
+        await signOut();
+        Swal.fire({
+          title: "Logged Out!",
+          text: "You have been successfully logged out.",
+          icon: "success",
+        });
+      } catch (error) {
+        Swal.fire({
+          title: `${error}`,
+          text: "Failed to log out. Please try again.",
+          icon: "error",
+        });
+      }
+    }
+  };
   const navLinks = (
     <>
       <li>
@@ -17,9 +57,6 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink>Notification icon</NavLink>
-      </li>
-      <li>
-        <NavLink to="/login">Join Us</NavLink>
       </li>
     </>
   );
@@ -55,43 +92,55 @@ const Navbar = () => {
               {navLinks}
             </ul>
           </div>
-          <a className="btn btn-ghost text-xl">Forum X</a>
+          <Link to="/">
+            <h1 className="pl-4 text-xl">Forum X</h1>
+          </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{navLinks}</ul>
         </div>
-        <div className="navbar-end">
-          <div className="dropdown dropdown-end">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar"
-            >
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                />
+        <div className="navbar-end pr-8">
+          {user ? (
+            <div className="dropdown dropdown-end">
+              <div
+                className="btn btn-ghost btn-circle btn-lg avatar"
+                tabIndex={0}
+                role="button"
+              >
+                <div className="hover:ring-accent ring-offset-base-100 w-12 rounded-full hover:ring ring-offset-2">
+                  <img src={user?.photoURL} />
+                </div>
               </div>
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              >
+                <li>
+                  <p className="pointer-events-none">{user?.displayName}</p>
+                </li>
+                <li>
+                  <Link to="/dashboard">
+                    <p>Dashboard</p>
+                  </Link>
+                </li>
+                <li>
+                  <a className="justify-between">
+                    Profile
+                    <span className="badge">New</span>
+                  </a>
+                </li>
+                <li>
+                  <button onClick={handleLogout}>Logout</button>
+                </li>
+              </ul>
             </div>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-            >
-              <li>
-                <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </a>
-              </li>
-              <li>
-                <a>Settings</a>
-              </li>
-              <li>
-                <button onClick={signOut}>Logout</button>
-              </li>
-            </ul>
-          </div>
+          ) : (
+            <Link to="/login">
+              <button className="p-3 border border-transparent hover:border-stone-500 cursor-pointer">
+                Join Us
+              </button>
+            </Link>
+          )}
         </div>
       </div>
     </>

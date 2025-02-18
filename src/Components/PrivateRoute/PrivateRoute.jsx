@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from "react-router";
 import { useAuth } from "../../Hooks/useAuth";
-
+import PropTypes from "prop-types";
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
@@ -19,6 +19,10 @@ const PrivateRoute = ({ children }) => {
   }
 
   return children; // Render the protected component
+};
+
+PrivateRoute.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default PrivateRoute;

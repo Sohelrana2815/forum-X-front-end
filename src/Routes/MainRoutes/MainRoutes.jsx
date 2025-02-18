@@ -5,6 +5,7 @@ import Login from "../../Pages/Auth/Login/Login";
 import Register from "../../Pages/Auth/Register/Register";
 import About from "../../Pages/About/About";
 import PrivateRoute from "../../Components/PrivateRoute/PrivateRoute";
+import Dashboard from "../../Dashboard/Dashboard";
 
 const MainRoutes = () => {
   return (
@@ -22,6 +23,7 @@ const MainRoutes = () => {
           />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </>
