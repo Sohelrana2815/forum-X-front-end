@@ -1,9 +1,12 @@
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../../../Hooks/useAuth";
 import { useForm } from "react-hook-form";
-
 const Login = () => {
   const { signIn } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.form?.pathname || "/"; // Default redirect path
   const {
     register,
     handleSubmit,
@@ -14,6 +17,7 @@ const Login = () => {
     try {
       const { email, password } = data;
       await signIn(email, password);
+      navigate(from, { replace: true });
       console.log("User signed in successfully!");
     } catch (error) {
       console.error("Sign-in error:", error.message);

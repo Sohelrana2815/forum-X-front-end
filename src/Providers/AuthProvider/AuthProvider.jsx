@@ -18,8 +18,12 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("User in Auth State Changed:", currentUser);
-      setUser(currentUser);
+      console.log("User in auth state change:", currentUser);
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
 
@@ -96,6 +100,16 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Sign-out method
+
+  const signOut = async () => {
+    try {
+      await auth.signOut();
+    } catch (error) {
+      console.error("Sign-out error:", error.message);
+    }
+  };
+
   const updateUserProfile = async (updates) => {
     try {
       // 1. Check current user
@@ -124,6 +138,7 @@ export function AuthProvider({ children }) {
     authError,
     signUp,
     signIn,
+    signOut,
     updateUserProfile,
   };
 
