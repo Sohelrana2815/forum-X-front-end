@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { axiosPublic } from "../../../Hooks/axiosInstances";
 import { useAuth } from "../../../Hooks/useAuth";
+import { Link } from "react-router";
 
 const Register = () => {
   const {
@@ -126,29 +127,31 @@ const Register = () => {
                   {/* Avatar Upload Field */}
 
                   <label className="fieldset-label">Profile Picture</label>
-
                   <input
                     type="file"
                     className="file-input file-input-accent"
-                    accept="image/jpeg, image/png, image/gif, image/webp"
+                    accept="image/jpeg, image/gif, image/png, /image/webp"
                     {...register("avatar")}
                     onChange={(e) => {
                       const file = e.target.files[0];
-                      if (file) {
+                      if (!file) {
                         // Validate file size
+
                         if (file.size > 5 * 1024 * 1024) {
-                          // 5MB
+                          // if file size grater then 5MB
                           alert("File size must be less than 5MB");
-                          e.target.value = null; // Clear the invalid file
+                          e.target.value = null; // clear the invalid file
                         }
 
                         // Validate file type
+
                         const allowedTypes = [
                           "image/jpeg",
                           "image/png",
                           "image/gif",
                           "image/webp",
                         ];
+
                         if (!allowedTypes.includes(file.type)) {
                           alert(
                             "Only JPEG, PNG, GIF, and WEBP images are allowed"
@@ -158,6 +161,7 @@ const Register = () => {
                       }
                     }}
                   />
+
                   {errors.avatar && (
                     <span className="text-[#C62300] text-base">
                       {errors.avatar.message}
@@ -180,6 +184,15 @@ const Register = () => {
                     {loading ? "Sign Up..." : "Sign Up"}
                   </button>
                 </fieldset>
+                {/* Toggle */}
+                <div>
+                  <h3 className="text-center">
+                    Already have an account? {" "}
+                    <Link to="/login" className="text-white text-base">
+                      Login
+                    </Link>
+                  </h3>
+                </div>
               </form>
             </div>
           </div>

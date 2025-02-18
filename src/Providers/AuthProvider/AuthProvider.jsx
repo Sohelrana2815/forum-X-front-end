@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
 import auth from "../../../firebase.config";
@@ -57,6 +58,44 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Sign in with email/password
+
+  const signIn = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      console.log("User signed in successfully! UID:", userCredential.user.uid);
+
+      setAuthError(null); // Clear any previous errors
+      return userCredential; // Return the user credential
+    } catch (error) {
+      let errorMessage = "Sign-in failed. Please try again.";
+      // Firebase error codes
+
+      switch (error.code) {
+        case "auth/user-not-found":
+          errorMessage = "User not found. Please check your email.";
+          break;
+        case "auth/wrong-password":
+          errorMessage = "Incorrect password. Please try again.";
+          break;
+        case "auth/invalid-email":
+          errorMessage = "Invalid email address.";
+          break;
+        case "auth/too-many-requests":
+          errorMessage = "Too many attempts. Please try again later.";
+          break;
+      }
+
+      setAuthError(errorMessage); // Set the error message
+      throw error;
+    }
+  };
+
   const updateUserProfile = async (updates) => {
     try {
       // 1. Check current user
@@ -84,6 +123,7 @@ export function AuthProvider({ children }) {
     loading,
     authError,
     signUp,
+    signIn,
     updateUserProfile,
   };
 
