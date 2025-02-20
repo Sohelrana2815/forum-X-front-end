@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { axiosPublic } from "../../../Hooks/axiosInstances";
 import { useAuth } from "../../../Hooks/useAuth";
@@ -7,18 +9,38 @@ const Register = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
-  const { signUp, loading, authError, updateUserProfile } = useAuth();
+  const {
+    signUp,
+    loading: authLoading,
+    authError,
+    updateUserProfile,
+  } = useAuth();
+
+  const [isSubmitting, setIsSubmitting] = useState(false); // New loading state
 
   const location = useLocation();
   const navigate = useNavigate();
-
   const from = location.state?.from?.pathname || "/";
 
   const onSubmit = async (data) => {
     try {
+      setIsSubmitting(true); // Start loading
       const { name, email, password, avatar } = data;
+
+      // Show loading alert
+
+      Swal.fire({
+        title: "Creating Account...",
+        html: "Please wait while we create your account",
+
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
 
       // 1. Upload image (Mandatory during sign up)
 
@@ -69,14 +91,21 @@ const Register = () => {
         userData
       );
 
-      if (!registerUserResponse) {
+      if (!registerUserResponse.data.insertedId) {
         throw new Error("Failed to store user data in database");
       }
 
-      if (registerUserResponse.data.insertedId) {
-        alert("success");
-      }
+      // Success alert
 
+      Swal.fire({
+        icon: "success",
+        title: "Registration Successful!",
+        text: "Your account has been created",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      // Reset the form
+      reset();
       // Navigate the user
 
       navigate(from, { replace: true });
@@ -84,6 +113,15 @@ const Register = () => {
       console.log("Registration profile update successful!");
     } catch (error) {
       console.error("Registration error:", error.message);
+      // Error alert
+
+      Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+        text: error.message || "Something went wrong!",
+      });
+    } finally {
+      setIsSubmitting(false); // End loading
     }
   };
 
@@ -206,10 +244,17 @@ const Register = () => {
                   {/* Submit button */}
                   <button
                     type="submit"
-                    disabled={loading}
+                    disabled={isSubmitting || authLoading}
                     className="btn btn-neutral mt-4"
                   >
-                    {loading ? "Sign Up..." : "Sign Up"}
+                    {isSubmitting || authLoading ? (
+                      <>
+                        <span className="loading loading-spinner"></span>
+                        Signing up...
+                      </>
+                    ) : (
+                      "Sign up"
+                    )}
                   </button>
                 </fieldset>
                 {/* Toggle */}

@@ -10,6 +10,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -17,6 +18,7 @@ const Login = () => {
     try {
       const { email, password } = data;
       await signIn(email, password);
+      reset();
       navigate(from, { replace: true });
       console.log("User signed in successfully!");
     } catch (error) {
