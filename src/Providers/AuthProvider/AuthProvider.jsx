@@ -84,8 +84,8 @@ export function AuthProvider({ children }) {
         case "auth/user-not-found":
           errorMessage = "User not found. Please check your email.";
           break;
-        case "auth/wrong-password":
-          errorMessage = "Incorrect password. Please try again.";
+        case "auth/invalid-credential":
+          errorMessage = "Invalid credentials. Please check your email and password and try again.";
           break;
         case "auth/invalid-email":
           errorMessage = "Invalid email address.";

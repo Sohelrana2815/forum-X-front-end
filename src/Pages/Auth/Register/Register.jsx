@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { axiosPublic } from "../../../Hooks/axiosInstances";
 import { useAuth } from "../../../Hooks/useAuth";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 
 const Register = () => {
   const {
@@ -10,6 +10,11 @@ const Register = () => {
     formState: { errors },
   } = useForm();
   const { signUp, loading, authError, updateUserProfile } = useAuth();
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const from = location.state?.from?.pathname || "/";
 
   const onSubmit = async (data) => {
     try {
@@ -49,6 +54,32 @@ const Register = () => {
         displayName: name,
         photoURL: photoURL,
       });
+
+      // 4. Store user data in MongoDB
+
+      const userData = {
+        name,
+        email,
+        password,
+        photoURL, // hash it
+      };
+
+      const registerUserResponse = await axiosPublic.post(
+        "/register-user",
+        userData
+      );
+
+      if (!registerUserResponse) {
+        throw new Error("Failed to store user data in database");
+      }
+
+      if (registerUserResponse.data.insertedId) {
+        alert("success");
+      }
+
+      // Navigate the user
+
+      navigate(from, { replace: true });
 
       console.log("Registration profile update successful!");
     } catch (error) {

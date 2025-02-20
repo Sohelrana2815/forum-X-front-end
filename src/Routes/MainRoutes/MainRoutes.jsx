@@ -6,13 +6,17 @@ import Register from "../../Pages/Auth/Register/Register";
 import About from "../../Pages/About/About";
 import PrivateRoute from "../../Components/PrivateRoute/PrivateRoute";
 import Dashboard from "../../Dashboard/Dashboard";
+import MyProfile from "../../Dashboard/MyProfile/MyProfile";
+import CreatePost from "../../Dashboard/CreatePost/CreatePost";
+import MyPosts from "../../Dashboard/MyPosts/MyPosts";
 
 const MainRoutes = () => {
   return (
     <>
       <Routes>
+        {/* Home page routes */}
         <Route path="/" element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
+          <Route index element={<Home />} />
           <Route
             path="about"
             element={
@@ -23,7 +27,14 @@ const MainRoutes = () => {
           />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="dashboard" element={<Dashboard />} />
+        </Route>
+
+        {/* Dashboard routes */}
+        <Route path="dashboard" element={<Dashboard />}>
+          <Route element={<MyProfile />} />
+          <Route path="myProfile" element={<MyProfile />} />
+          <Route path="createPost" element={<CreatePost />} />
+          <Route path="myPosts" element={<MyPosts />} />
         </Route>
       </Routes>
     </>

@@ -3,7 +3,7 @@ import { useAuth } from "../../../Hooks/useAuth";
 
 import { useForm } from "react-hook-form";
 const Login = () => {
-  const { signIn } = useAuth();
+  const { signIn, authError } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.form?.pathname || "/"; // Default redirect path
@@ -67,6 +67,7 @@ const Login = () => {
                   <div>
                     <a className="link link-hover">Forgot password?</a>
                   </div>
+                  {authError && <div className="text-red-600">{authError}</div>}
                   <button type="submit" className="btn btn-neutral mt-4">
                     Login
                   </button>
