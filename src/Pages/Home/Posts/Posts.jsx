@@ -19,7 +19,9 @@ const Posts = () => {
   });
   // Loading state
   if (isLoading) {
-    return <p>Loading posts...</p>;
+    return (
+      <span className="loading loading-ring loading-xl text-blue-600"></span>
+    );
   }
 
   // Error state

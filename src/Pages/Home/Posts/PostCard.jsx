@@ -12,7 +12,7 @@ const PostCard = ({ post }) => {
 
           <h3 className="text-xl font-semibold mb-2">{title}</h3>
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-500">Tag: {tag}</span>
+            <span className="text-sm text-gray-500"># {tag}</span>
 
             <span className="text-sm text-gray-500">
               Posted on: {new Date(createdAt).toLocaleDateString()}
