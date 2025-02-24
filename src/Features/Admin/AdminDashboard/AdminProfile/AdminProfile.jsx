@@ -21,6 +21,8 @@ const AdminProfile = () => {
         alert("Please enter at least one tag");
         return;
       }
+      console.log(tags);
+
       // Send tags to the backend
 
       await axiosPublic.post("/tags", { tags });

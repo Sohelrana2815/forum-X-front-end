@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { axiosPublic } from "../../../../Hooks/axiosInstances";
 import { useAuth } from "../../../../Hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
 const AddPost = () => {
   const {
     register,
@@ -8,7 +9,19 @@ const AddPost = () => {
     reset,
     formState: { errors },
   } = useForm();
+  // Fetch tags using TanStack Query
 
+  const {
+    data: tags,
+    isLoading: isTagsLoading,
+    isError: isTagsError,
+  } = useQuery({
+    queryKey: ["tags"],
+    queryFn: async () => {
+      const response = await axiosPublic.get("/tags");
+      return response.data;
+    },
+  });
   const { user } = useAuth();
   const onSubmit = async (data) => {
     try {
@@ -95,33 +108,23 @@ const AddPost = () => {
             defaultValue=""
             {...register("tag", { required: "Tag is required" })}
             className="select focus:outline-none focus:ring focus:ring-purple-700 focus:border-none"
+            disabled={isTagsLoading || isTagsError}
           >
             <option value="" disabled>
-              Select a tag
+              {isTagsLoading
+                ? "Loading tags..."
+                : isTagsError
+                ? "Failed to load tags"
+                : "Select a tag"}
             </option>
-            <option value="technology">Technology</option>
-            <option value="web-development">Programming</option>
-            <option value="design">Design</option>
-            <option value="art">Art</option>
-            <option value="science">Science</option>
-            <option value="health">Health</option>
-            <option value="education">Education</option>
-            <option value="business">Business</option>
-            <option value="gaming">Gaming</option>
-            <option value="movies">Movies</option>
-            <option value="music">Music</option>
-            <option value="sports">Sports</option>
-            <option value="travel">Travel</option>
-            <option value="food">Food</option>
-            <option value="fitness">Fitness</option>
-            <option value="photography">Photography</option>
-            <option value="books">Books</option>
-            <option value="history">History</option>
-            <option value="politics">Politics</option>
-            <option value="environment">Environment</option>
+            {tags?.map((tag) => (
+              <option key={tag._id} value={tag.name}>
+                {tag.name}
+              </option>
+            ))}
           </select>
-          {errors && (
-            <p className="text-[#C62300] text-base">{errors.tag?.message}</p>
+          {errors.tag && (
+            <p className="text-[#C62300] text-sm">{errors.tag?.message}</p>
           )}
         </div>
 
