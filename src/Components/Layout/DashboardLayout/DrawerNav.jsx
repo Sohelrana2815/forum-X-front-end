@@ -46,6 +46,12 @@ const DashboardNav = () => {
                 <p>Admin Profile</p>
               </Link>
             </li>
+            {/* Shared NavLinks */}
+            <li>
+              <Link to="/">
+                <p>Home</p>
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
