@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router";
-import { useAuth } from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
+import { useAuth } from "../../../Hooks/useAuth";
 const Navbar = () => {
   const { signOut, loading, user } = useAuth();
 
@@ -121,6 +121,11 @@ const Navbar = () => {
                 <li>
                   <Link to="/dashboard">
                     <p>Dashboard</p>
+                  </Link>
+                </li>
+                <li>
+                  <Link>
+                    <p to="/adminDashboard">Admin Dashboard</p>
                   </Link>
                 </li>
                 <li>

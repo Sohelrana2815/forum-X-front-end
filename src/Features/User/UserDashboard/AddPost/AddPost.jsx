@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../Hooks/useAuth";
-import { axiosPublic } from "../../Hooks/axiosInstances";
-const CreatePost = () => {
+import { axiosPublic } from "../../../../Hooks/axiosInstances";
+import { useAuth } from "../../../../Hooks/useAuth";
+const AddPost = () => {
   const {
     register,
     handleSubmit,
@@ -133,4 +133,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default AddPost;

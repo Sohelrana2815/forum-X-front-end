@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router";
 
-const Dashboard = () => {
+const DashboardNav = () => {
   return (
     <>
       <div className="drawer">
@@ -23,6 +23,7 @@ const Dashboard = () => {
           ></label>
           <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
             {/* Sidebar content here */}
+            {/* Normal users routes */}
             <li>
               <Link to="myProfile">
                 <p>My Profile</p>
@@ -38,6 +39,13 @@ const Dashboard = () => {
                 <p>My Posts</p>
               </Link>
             </li>
+            {/* Admin Routes */}
+
+            <li>
+              <Link>
+                <p>Admin Profile</p>
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
@@ -45,4 +53,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardNav;
