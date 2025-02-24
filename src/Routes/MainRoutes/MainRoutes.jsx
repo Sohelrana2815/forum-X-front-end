@@ -31,13 +31,13 @@ const MainRoutes = () => {
         </Route>
 
         {/* User Dashboard routes */}
-        <Route path="dashboard" element={<DashboardNav />}>
+        <Route path="dashboardPage" element={<DashboardNav />}>
           <Route path="myProfile" element={<MyProfile />} />
-          <Route path="createPost" element={<AddPost />} />
+          <Route path="addPost" element={<AddPost />} />
           <Route path="myPosts" element={<MyPosts />} />
+          {/* Admin Dashboard routes */}
+          <Route path="adminProfile" element={<AdminProfile />} />
         </Route>
-        {/* Admin Dashboard routes */}
-        <Route path="adminProfile" element={<AdminProfile />} />
       </Routes>
     </>
   );

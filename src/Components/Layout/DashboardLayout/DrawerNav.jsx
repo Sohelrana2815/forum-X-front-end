@@ -30,8 +30,8 @@ const DashboardNav = () => {
               </Link>
             </li>
             <li>
-              <Link to="createPost">
-                <p>Create A Post</p>
+              <Link to="addPost">
+                <p>Add Post</p>
               </Link>
             </li>
             <li>
@@ -42,7 +42,7 @@ const DashboardNav = () => {
             {/* Admin Routes */}
 
             <li>
-              <Link>
+              <Link to="adminProfile">
                 <p>Admin Profile</p>
               </Link>
             </li>

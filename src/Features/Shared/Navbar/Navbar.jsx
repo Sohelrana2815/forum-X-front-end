@@ -119,13 +119,8 @@ const Navbar = () => {
                   <p className="pointer-events-none">{user?.displayName}</p>
                 </li>
                 <li>
-                  <Link to="/dashboard">
+                  <Link to="/dashboardPage">
                     <p>Dashboard</p>
-                  </Link>
-                </li>
-                <li>
-                  <Link>
-                    <p to="/adminDashboard">Admin Dashboard</p>
                   </Link>
                 </li>
                 <li>
