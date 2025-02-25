@@ -10,6 +10,7 @@ import AdminProfile from "../../Features/Admin/AdminDashboard/AdminProfile/Admin
 import DashboardNav from "../../Components/Layout/DashboardLayout/DrawerNav";
 import MyProfile from "../../Features/User/UserDashboard/MyProfile/MyProfile";
 import AddPost from "../../Features/User/UserDashboard/AddPost/AddPost";
+import PostDetails from "../../Pages/Home/Posts/PostDetails";
 
 const MainRoutes = () => {
   return (
@@ -28,6 +29,7 @@ const MainRoutes = () => {
           />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="postDetails/:id" element={<PostDetails />} />
         </Route>
 
         {/* User Dashboard routes */}
