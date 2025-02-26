@@ -7,6 +7,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.form?.pathname || "/"; // Default redirect path
+
   const {
     register,
     handleSubmit,

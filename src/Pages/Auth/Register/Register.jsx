@@ -52,6 +52,7 @@ const Register = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+
       console.log(
         "Img url from img bb:",
         uploadResponse.data,
@@ -62,6 +63,7 @@ const Register = () => {
       if (!uploadResponse.data.success) {
         throw new Error("Image upload failed");
       }
+
       // Stored url in photoURL variable
 
       const photoURL = uploadResponse.data.url;
@@ -82,8 +84,8 @@ const Register = () => {
       const userData = {
         name,
         email,
-        password,
-        photoURL, // hash it
+        password, // Hash it(Before stored it in database)
+        photoURL,
       };
 
       const registerUserResponse = await axiosPublic.post(
