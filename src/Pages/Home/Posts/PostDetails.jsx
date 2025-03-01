@@ -31,12 +31,12 @@ const PostDetails = () => {
   const { data: comments } = useQuery({
     queryKey: ["comments", id],
     queryFn: async () => {
-      const response = await axiosPublic.get(`/comments/${id}`);
-      return response.date;
+      const response = await axiosPublic.get(`/comments?postId=${id}`);
+      return response.data;
     },
   });
-
   // Upvote mutation
+
   const upvoteMutation = useMutation({
     mutationFn: () => axiosPublic.put(`/posts/${id}/upvote`),
     onSuccess: () => queryClient.invalidateQueries(["post", id]),
@@ -96,25 +96,28 @@ const PostDetails = () => {
           </div>
 
           <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-          <p className="text-gray-700 mb-6">{post.description}</p>
+          <p className="text-gray-400 mb-6">{post.description}</p>
 
           <div className="flex items-center gap-4">
             <div className="badge badge-outline">{post.tag}</div>
             <div className="flex items-center gap-4">
-              <button
-                onClick={() => upvoteMutation.mutate()}
-                className="flex items-center gap-2"
-              >
-                <FaRegThumbsUp />
+              {/* Upvote and Downvote buttons */}
+
+              <button className="flex items-center gap-2">
+                <FaRegThumbsUp
+                  onClick={() => upvoteMutation.mutate()}
+                  className="hover:text-blue-600 cursor-pointer"
+                />
                 <span>{post.upVote}</span>
               </button>
-              <button
-                onClick={() => downvoteMutation.mutate()}
-                className="flex items-center gap-2"
-              >
-                <FaRegThumbsDown />
+              <button className="flex items-center gap-2">
+                <FaRegThumbsDown
+                  onClick={() => downvoteMutation.mutate()}
+                  className="hover:text-blue-600 cursor-pointer"
+                />
                 <span>{post.downVote}</span>
               </button>
+
               <div className="dropdown dropdown-hover">
                 <label tabIndex={0} className="btn btn-ghost">
                   <FaShare />

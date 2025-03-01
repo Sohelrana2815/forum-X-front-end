@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router";
 import Home from "../../Pages/Home/Home/Home";
 import Login from "../../Pages/Auth/Login/Login";
 import Register from "../../Pages/Auth/Register/Register";
-import About from "../../Pages/About/About";
 import PrivateRoute from "../../Components/PrivateRoute/PrivateRoute";
 import MainLayout from "../../Components/Layout/MainLayout/MainLayout";
 import MyPosts from "../../Features/User/UserDashboard/MyPosts/MyPosts";
@@ -11,6 +10,7 @@ import DashboardNav from "../../Components/Layout/DashboardLayout/DrawerNav";
 import MyProfile from "../../Features/User/UserDashboard/MyProfile/MyProfile";
 import AddPost from "../../Features/User/UserDashboard/AddPost/AddPost";
 import PostDetails from "../../Pages/Home/Posts/PostDetails";
+import Membership from "../../Pages/About/Membership";
 
 const MainRoutes = () => {
   return (
@@ -20,10 +20,10 @@ const MainRoutes = () => {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
           <Route
-            path="about"
+            path="membership"
             element={
               <PrivateRoute>
-                <About />
+                <Membership />
               </PrivateRoute>
             }
           />
