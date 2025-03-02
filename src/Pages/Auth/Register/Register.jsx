@@ -79,13 +79,14 @@ const Register = () => {
         photoURL: photoURL,
       });
 
-      // 4. Store user data in MongoDB
+      // 4. Store user data in MongoDB (ব্যাজ সহ)
 
       const userData = {
         name,
         email,
         password, // Hash it(Before stored it in database)
         photoURL,
+        badge: "Bronze", // Default bronze 🥉
       };
 
       const registerUserResponse = await axiosPublic.post(
@@ -102,7 +103,7 @@ const Register = () => {
       Swal.fire({
         icon: "success",
         title: "Registration Successful!",
-        text: "Your account has been created",
+        text: "Your account has been created 🥉",
         showConfirmButton: false,
         timer: 2000,
       });
