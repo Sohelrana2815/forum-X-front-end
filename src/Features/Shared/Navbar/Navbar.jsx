@@ -1,8 +1,12 @@
 import { Link, NavLink } from "react-router";
 import Swal from "sweetalert2";
 import { useAuth } from "../../../Hooks/useAuth";
+import useUserData from "../../../Hooks/User/useUserData";
+
 const Navbar = () => {
-  const { signOut, loading, user } = useAuth();
+  const { signOut, loading: authLoading, user: authUser } = useAuth();
+
+  const { data: mongoUser, isLoading, isError } = useUserData(authUser?.email);
 
   // Logout
 
@@ -57,9 +61,16 @@ const Navbar = () => {
       </li>
     </>
   );
-  if (loading) {
-    return <span className="loading loading-ring loading-xl"></span>;
+  if (authLoading) {
+    return (
+      <span className="loading loading-ring loading-xl text-blue-700"></span>
+    );
   }
+  if (isLoading)
+    return (
+      <span className="loading loading-ring loading-xl text-blue-700"></span>
+    );
+  if (isError) return <div>Error loading user data</div>;
   return (
     <>
       <div className="navbar bg-base-100 shadow-sm">
@@ -96,16 +107,21 @@ const Navbar = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{navLinks}</ul>
         </div>
-        <div className="navbar-end pr-8">
-          {user ? (
+        <div className="navbar-end pr-8 relative py-3">
+          {authUser && (
+            <div className="absolute z-10 top-0 right-5 text-3xl ">
+              {mongoUser?.badge === "Bronze" ? "🥈" : "🥇"}
+            </div>
+          )}
+          {authUser ? (
             <div className="dropdown dropdown-end">
               <div
-                className="btn btn-ghost btn-circle btn-lg avatar"
+                className="btn btn-ghost btn-circle btn-lg w-[60px] h-[60px] avatar"
                 tabIndex={0}
                 role="button"
               >
-                <div className="hover:ring-accent ring-offset-base-100 w-12 rounded-full hover:ring ring-offset-2">
-                  <img src={user?.photoURL} />
+                <div className="hover:ring-accent ring-offset-base-100 rounded-full hover:ring ring-offset-2">
+                  <img src={authUser?.photoURL} />
                 </div>
               </div>
               <ul
@@ -113,7 +129,9 @@ const Navbar = () => {
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
               >
                 <li>
-                  <p className="pointer-events-none">{user?.displayName}</p>
+                  <p className="pointer-events-none border border-yellow-900 uppercase text-[12px]">
+                    {authUser?.displayName}
+                  </p>
                 </li>
                 <li>
                   <Link to="/dashboardPage">
