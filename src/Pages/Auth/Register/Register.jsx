@@ -89,10 +89,7 @@ const Register = () => {
         badge: "Bronze", // Default bronze 🥉
       };
 
-      const registerUserResponse = await axiosPublic.post(
-        "/register-user",
-        userData
-      );
+      const registerUserResponse = await axiosPublic.post("/signup", userData);
 
       if (!registerUserResponse.data.insertedId) {
         throw new Error("Failed to store user data in database");
