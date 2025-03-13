@@ -40,8 +40,9 @@ const PostCard = ({ post }) => {
                 👍 {upVote}
                 👎 {downVote}
                 <span className="ml-2 font-bold">
-                  (Total: {voteDifference})
+                  (Total Vote: {voteDifference})
                 </span>
+                {/* <span>{comments}</span> */}
               </div>
             </div>
           </div>
